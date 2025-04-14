@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hádání čísla 1-100</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+
+        #gameArea {
+            margin-top: 50px;
+        }
+
+        #message {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        /* Lítající texty */
+        .floatingText {
+            position: fixed;
+            font-size: 24px;
+            font-weight: bold;
+            color: green;
+            animation: floatText 5s linear infinite;
+        }
+
+        /* Animace pro texty */
+        @keyframes floatText {
+            0% { transform: translateY(0); }
+            25% { transform: translateY(-20px); }
+            50% { transform: translateY(0); }
+            75% { transform: translateY(20px); }
+            100% { transform: translateY(0); }
+        }
+
+        #floatingText1 {
+            top: 20px;
+            left: 20px;
+        }
+
+        #floatingText2 {
+            top: 100px;
+            left: 20px;
+        }
+
+        #floatingText3 {
+            top: 180px;
+            left: 20px;
+        }
+
+        #floatingText4 {
+            top: 260px;
+            left: 20px;
+        }
+
+        #floatingText5 {
+            top: 340px;
+            left: 20px;
+        }
+
+        #floatingText6 {
+            top: 420px;
+            left: 20px;
+        }
+
+        #floatingText7 {
+            top: 500px;
+            left: 20px;
+        }
+
+        #floatingText8 {
+            top: 580px;
+            left: 20px;
+        }
+
+        button {
+            margin: 10px;
+        }
+
+        #timer {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hádání čísla 1-100</h1>
+
+    <div id="gameArea">
+        <input type="text" id="playerName" placeholder="Zadejte své jméno">
+        <button id="startButton">Začít</button>
+        <p id="message"></p>
+        <input type="number" id="guess" placeholder="Zadej číslo (1-100)" disabled>
+        <button id="submitGuess" disabled>Odhadnout</button>
+        <button id="restartButton" disabled>Restartovat</button>
+    </div>
+
+    <!-- Časomíra -->
+    <div id="timer">Čas: 0 sekund</div>
+
+    <!-- Oddělené lítající texty -->
+    <div id="floatingText1" class="floatingText">Made by MrPepa01!</div>
+    <div id="floatingText2" class="floatingText">1442025!</div>
+    <div id="floatingText3" class="floatingText">I Played These Games Before!</div>
+    <div id="floatingText4" class="floatingText">JavaScript!</div>
+    <div id="floatingText5" class="floatingText">Let's Play!</div>
+
+    <!-- Nové texty -->
+    <div id="floatingText6" class="floatingText">JHFGsdghjd</div>
+    <div id="floatingText7" class="floatingText">Podejte mi kávu</div>
+    <div id="floatingText8" class="floatingText">john pork!</div>
+
+    <script>
+        let randomNumber;
+        let playerName;
+        let attempts = 0;
+        let timer;
+        let timeElapsed = 0;
+
+        document.getElementById("startButton").addEventListener("click", startGame);
+        document.getElementById("submitGuess").addEventListener("click", submitGuess);
+        document.getElementById("restartButton").addEventListener("click", restartGame);
+
+        function startGame() {
+            playerName = document.getElementById("playerName").value || "Neznámý hráč";
+            randomNumber = Math.floor(Math.random() * 100) + 1;
+            attempts = 0;
+            timeElapsed = 0;
+            document.getElementById("message").textContent = "Hádej číslo mezi 1 a 100!";
+            document.getElementById("startButton").disabled = true;
+            document.getElementById("guess").disabled = false;
+            document.getElementById("submitGuess").disabled = false;
+            document.getElementById("restartButton").disabled = false;
+
+            // Spustí časomíru
+            timer = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            timeElapsed++;
+            document.getElementById("timer").textContent = `Čas: ${timeElapsed} sekund`;
+        }
+
+        function submitGuess() {
+            const guess = parseInt(document.getElementById("guess").value);
+            attempts++;
+
+            if (guess === randomNumber) {
+                document.getElementById("message").textContent = `Gratuluji, hádal(a) jste správně za ${attempts} pokusů a ${timeElapsed} sekund!`;
+                clearInterval(timer);  // Zastaví časomíru po správném hádání
+            } else if (guess < randomNumber) {
+                document.getElementById("message").textContent = "Zkuste větší číslo!";
+            } else {
+                document.getElementById("message").textContent = "Zkuste menší číslo!";
+            }
+        }
+
+        function restartGame() {
+            document.getElementById("guess").value = "";
+            document.getElementById("message").textContent = "";
+            document.getElementById("startButton").disabled = false;
+            document.getElementById("guess").disabled = true;
+            document.getElementById("submitGuess").disabled = true;
+            document.getElementById("restartButton").disabled = true;
+
+            clearInterval(timer);  // Zastaví časomíru při restartu
+            document.getElementById("timer").textContent = "Čas: 0 sekund";
+        }
+    </script>
+</body>
+</html>
